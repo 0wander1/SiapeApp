@@ -12,6 +12,7 @@ import PedidoEditarScreen from './src/screens/PedidoEditarScreen';
 import FacturasScreen from './src/screens/FacturasScreen';
 import FacturaDetalleScreen from './src/screens/FacturaDetalleScreen';
 import FacturaNuevaScreen from './src/screens/FacturaNuevaScreen';
+import FacturaEditarScreen from './src/screens/FacturaEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -24,6 +25,7 @@ export type RootStackParamList = {
   FacturasScreen: undefined;
   FacturaDetalleScreen: { id_factura: string | number };
   FacturaNuevaScreen: undefined;
+  FacturaEditarScreen: { id_factura: string | number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -87,6 +89,11 @@ function App() {
             name="FacturaNuevaScreen"
             component={FacturaNuevaScreen}
             options={{ title: 'Nueva Factura' }}
+          />
+          <Stack.Screen
+            name="FacturaEditarScreen"
+            component={FacturaEditarScreen}
+            options={{ title: 'Editar Factura' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

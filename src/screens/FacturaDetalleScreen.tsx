@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import axios from 'axios';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import type { RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '../../App';
 import { authState } from '../state/auth';
@@ -21,18 +24,97 @@ import {
   type FacturaItem,
 } from '../utils/facturas';
 
+type FacturaDetalleScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'FacturaDetalleScreen'
+>;
+
 type FacturaDetalleScreenRouteProp = RouteProp<
   RootStackParamList,
   'FacturaDetalleScreen'
 >;
 
+function HeaderActions({
+  navigation,
+  id_factura,
+  onEliminar,
+}: {
+  navigation: FacturaDetalleScreenNavigationProp;
+  id_factura: string | number;
+  onEliminar: () => void;
+}) {
+  return (
+    <View style={styles.headerActions}>
+      <TouchableOpacity
+        style={styles.headerButton}
+        onPress={() =>
+          navigation.navigate('FacturaEditarScreen', { id_factura })
+        }
+      >
+        <Text style={styles.headerButtonText}>Editar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.headerButton} onPress={onEliminar}>
+        <Text style={styles.headerButtonTextDanger}>Eliminar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 function FacturaDetalleScreen() {
+  const navigation = useNavigation<FacturaDetalleScreenNavigationProp>();
   const route = useRoute<FacturaDetalleScreenRouteProp>();
   const { id_factura } = route.params;
 
   const [factura, setFactura] = useState<Factura | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const handleEliminarConfirmado = useCallback(async () => {
+    try {
+      await axios.delete(`${FACTURAS_URL}/${id_factura}`, {
+        headers: {
+          Authorization: `Bearer ${authState.token}`,
+        },
+      });
+
+      navigation.popTo('FacturasScreen');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        Alert.alert('Error', err.response.data.message);
+      } else {
+        Alert.alert('Error', 'Ocurrió un error al eliminar la factura.');
+      }
+    }
+  }, [navigation, id_factura]);
+
+  const handleEliminar = useCallback(() => {
+    const numero = factura?.numero_factura ?? id_factura;
+
+    Alert.alert(
+      'Eliminar factura',
+      `¿Estás seguro de que deseas eliminar la factura #${numero}?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: handleEliminarConfirmado,
+        },
+      ],
+    );
+  }, [id_factura, factura, handleEliminarConfirmado]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderActions
+          navigation={navigation}
+          id_factura={id_factura}
+          onEliminar={handleEliminar}
+        />
+      ),
+    });
+  }, [navigation, id_factura, handleEliminar]);
 
   useEffect(() => {
     const fetchFactura = async () => {
@@ -166,6 +248,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  headerActions: {
+    flexDirection: 'row',
+  },
+  headerButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  headerButtonText: {
+    color: '#007AFF',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  headerButtonTextDanger: {
+    color: '#D32F2F',
+    fontSize: 15,
+    fontWeight: '600',
   },
   content: {
     paddingHorizontal: 16,
