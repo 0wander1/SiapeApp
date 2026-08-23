@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -27,11 +27,32 @@ type PedidosScreenNavigationProp = NativeStackNavigationProp<
   'PedidosScreen'
 >;
 
+function HeaderNuevoButton({
+  navigation,
+}: {
+  navigation: PedidosScreenNavigationProp;
+}) {
+  return (
+    <TouchableOpacity
+      style={styles.headerButton}
+      onPress={() => navigation.navigate('PedidoNuevoScreen')}
+    >
+      <Text style={styles.headerButtonText}>+ Nuevo</Text>
+    </TouchableOpacity>
+  );
+}
+
 function PedidosScreen() {
   const navigation = useNavigation<PedidosScreenNavigationProp>();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <HeaderNuevoButton navigation={navigation} />,
+    });
+  }, [navigation]);
 
   useEffect(() => {
     const fetchPedidos = async () => {
@@ -118,6 +139,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  headerButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  headerButtonText: {
+    color: '#007AFF',
+    fontSize: 15,
+    fontWeight: '600',
   },
   content: {
     paddingHorizontal: 16,
