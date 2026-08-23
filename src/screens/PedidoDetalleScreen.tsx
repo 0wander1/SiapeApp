@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -34,22 +35,29 @@ type PedidoDetalleScreenRouteProp = RouteProp<
   'PedidoDetalleScreen'
 >;
 
-function HeaderEditarButton({
+function HeaderActions({
   navigation,
   id_pedido_prov,
+  onEliminar,
 }: {
   navigation: PedidoDetalleScreenNavigationProp;
   id_pedido_prov: string | number;
+  onEliminar: () => void;
 }) {
   return (
-    <TouchableOpacity
-      style={styles.headerButton}
-      onPress={() =>
-        navigation.navigate('PedidoEditarScreen', { id_pedido_prov })
-      }
-    >
-      <Text style={styles.headerButtonText}>Editar</Text>
-    </TouchableOpacity>
+    <View style={styles.headerActions}>
+      <TouchableOpacity
+        style={styles.headerButton}
+        onPress={() =>
+          navigation.navigate('PedidoEditarScreen', { id_pedido_prov })
+        }
+      >
+        <Text style={styles.headerButtonText}>Editar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.headerButton} onPress={onEliminar}>
+        <Text style={styles.headerButtonTextDanger}>Eliminar</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -62,16 +70,50 @@ function PedidoDetalleScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useLayoutEffect(() => {
+  const handleEliminarConfirmado = useCallback(async () => {
+    try {
+      await axios.delete(`${PEDIDOS_URL}/${id_pedido_prov}`, {
+        headers: {
+          Authorization: `Bearer ${authState.token}`,
+        },
+      });
+
+      navigation.popTo('PedidosScreen');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        Alert.alert('Error', err.response.data.message);
+      } else {
+        Alert.alert('Error', 'Ocurrió un error al eliminar el pedido.');
+      }
+    }
+  }, [navigation, id_pedido_prov]);
+
+  const handleEliminar = useCallback(() => {
+    Alert.alert(
+      'Eliminar pedido',
+      `¿Estás seguro de que deseas eliminar el pedido #${id_pedido_prov}?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Eliminar',
+          style: 'destructive',
+          onPress: handleEliminarConfirmado,
+        },
+      ],
+    );
+  }, [id_pedido_prov, handleEliminarConfirmado]);
+
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderEditarButton
+        <HeaderActions
           navigation={navigation}
           id_pedido_prov={id_pedido_prov}
+          onEliminar={handleEliminar}
         />
       ),
     });
-  }, [navigation, id_pedido_prov]);
+  }, [navigation, id_pedido_prov, handleEliminar]);
 
   useEffect(() => {
     const fetchPedido = async () => {
@@ -206,12 +248,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  headerActions: {
+    flexDirection: 'row',
+  },
   headerButton: {
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
   headerButtonText: {
     color: '#007AFF',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  headerButtonTextDanger: {
+    color: '#D32F2F',
     fontSize: 15,
     fontWeight: '600',
   },
