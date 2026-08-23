@@ -33,6 +33,8 @@ function HomeScreen() {
   const handlePress = (moduleKey: string) => {
     if (moduleKey === 'pedidos') {
       navigation.navigate('PedidosScreen');
+    } else if (moduleKey === 'facturas') {
+      navigation.navigate('FacturasScreen');
     }
   };
 
