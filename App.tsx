@@ -13,6 +13,8 @@ import FacturasScreen from './src/screens/FacturasScreen';
 import FacturaDetalleScreen from './src/screens/FacturaDetalleScreen';
 import FacturaNuevaScreen from './src/screens/FacturaNuevaScreen';
 import FacturaEditarScreen from './src/screens/FacturaEditarScreen';
+import InventarioScreen from './src/screens/InventarioScreen';
+import InventarioEditarScreen from './src/screens/InventarioEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -26,6 +28,12 @@ export type RootStackParamList = {
   FacturaDetalleScreen: { id_factura: string | number };
   FacturaNuevaScreen: undefined;
   FacturaEditarScreen: { id_factura: string | number };
+  InventarioScreen: undefined;
+  InventarioEditarScreen: {
+    id_inventario: string | number;
+    producto_id_producto: string | number;
+    nombre_producto: string;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -94,6 +102,16 @@ function App() {
             name="FacturaEditarScreen"
             component={FacturaEditarScreen}
             options={{ title: 'Editar Factura' }}
+          />
+          <Stack.Screen
+            name="InventarioScreen"
+            component={InventarioScreen}
+            options={{ title: 'Inventario' }}
+          />
+          <Stack.Screen
+            name="InventarioEditarScreen"
+            component={InventarioEditarScreen}
+            options={{ title: 'Editar Inventario' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

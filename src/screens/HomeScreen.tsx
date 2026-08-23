@@ -35,6 +35,8 @@ function HomeScreen() {
       navigation.navigate('PedidosScreen');
     } else if (moduleKey === 'facturas') {
       navigation.navigate('FacturasScreen');
+    } else if (moduleKey === 'inventario') {
+      navigation.navigate('InventarioScreen');
     }
   };
 
