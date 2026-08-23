@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import axios from 'axios';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import type { RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '../../App';
 import { authState } from '../state/auth';
@@ -22,18 +24,54 @@ import {
   type PedidoItem,
 } from '../utils/pedidos';
 
+type PedidoDetalleScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'PedidoDetalleScreen'
+>;
+
 type PedidoDetalleScreenRouteProp = RouteProp<
   RootStackParamList,
   'PedidoDetalleScreen'
 >;
 
+function HeaderEditarButton({
+  navigation,
+  id_pedido_prov,
+}: {
+  navigation: PedidoDetalleScreenNavigationProp;
+  id_pedido_prov: string | number;
+}) {
+  return (
+    <TouchableOpacity
+      style={styles.headerButton}
+      onPress={() =>
+        navigation.navigate('PedidoEditarScreen', { id_pedido_prov })
+      }
+    >
+      <Text style={styles.headerButtonText}>Editar</Text>
+    </TouchableOpacity>
+  );
+}
+
 function PedidoDetalleScreen() {
+  const navigation = useNavigation<PedidoDetalleScreenNavigationProp>();
   const route = useRoute<PedidoDetalleScreenRouteProp>();
   const { id_pedido_prov } = route.params;
 
   const [pedido, setPedido] = useState<Pedido | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderEditarButton
+          navigation={navigation}
+          id_pedido_prov={id_pedido_prov}
+        />
+      ),
+    });
+  }, [navigation, id_pedido_prov]);
 
   useEffect(() => {
     const fetchPedido = async () => {
@@ -167,6 +205,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  headerButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  headerButtonText: {
+    color: '#007AFF',
+    fontSize: 15,
+    fontWeight: '600',
   },
   content: {
     paddingHorizontal: 16,

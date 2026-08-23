@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { authState } from '../state/auth';
@@ -54,32 +54,34 @@ function PedidosScreen() {
     });
   }, [navigation]);
 
-  useEffect(() => {
-    const fetchPedidos = async () => {
-      setError('');
-      setLoading(true);
+  const fetchPedidos = useCallback(async () => {
+    setError('');
+    setLoading(true);
 
-      try {
-        const response = await axios.get(PEDIDOS_URL, {
-          headers: {
-            Authorization: `Bearer ${authState.token}`,
-          },
-        });
+    try {
+      const response = await axios.get(PEDIDOS_URL, {
+        headers: {
+          Authorization: `Bearer ${authState.token}`,
+        },
+      });
 
-        setPedidos(response.data);
-      } catch (err) {
-        if (axios.isAxiosError(err) && err.response?.data?.message) {
-          setError(err.response.data.message);
-        } else {
-          setError('Ocurrió un error al cargar los pedidos.');
-        }
-      } finally {
-        setLoading(false);
+      setPedidos(response.data);
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Ocurrió un error al cargar los pedidos.');
       }
-    };
-
-    fetchPedidos();
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPedidos();
+    }, [fetchPedidos]),
+  );
 
   if (loading) {
     return (

@@ -8,6 +8,7 @@ import VerifyScreen from './src/screens/VerifyScreen';
 import PedidosScreen from './src/screens/PedidosScreen';
 import PedidoDetalleScreen from './src/screens/PedidoDetalleScreen';
 import PedidoNuevoScreen from './src/screens/PedidoNuevoScreen';
+import PedidoEditarScreen from './src/screens/PedidoEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
   PedidosScreen: undefined;
   PedidoDetalleScreen: { id_pedido_prov: string | number };
   PedidoNuevoScreen: undefined;
+  PedidoEditarScreen: { id_pedido_prov: string | number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -59,6 +61,11 @@ function App() {
             name="PedidoNuevoScreen"
             component={PedidoNuevoScreen}
             options={{ title: 'Nuevo Pedido' }}
+          />
+          <Stack.Screen
+            name="PedidoEditarScreen"
+            component={PedidoEditarScreen}
+            options={{ title: 'Editar Pedido' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
