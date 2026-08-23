@@ -1,4 +1,8 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+
+import type { RootStackParamList } from '../../App';
 
 type Module = {
   key: string;
@@ -18,7 +22,20 @@ const MODULES: Module[] = [
   { key: 'reportes', label: 'Reportes', icon: '📊' },
 ];
 
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'HomeScreen'
+>;
+
 function HomeScreen() {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const handlePress = (moduleKey: string) => {
+    if (moduleKey === 'pedidos') {
+      navigation.navigate('PedidosScreen');
+    }
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -28,7 +45,11 @@ function HomeScreen() {
 
       <View style={styles.grid}>
         {MODULES.map(module => (
-          <TouchableOpacity key={module.key} style={styles.card}>
+          <TouchableOpacity
+            key={module.key}
+            style={styles.card}
+            onPress={() => handlePress(module.key)}
+          >
             <Text style={styles.icon}>{module.icon}</Text>
             <Text style={styles.label}>{module.label}</Text>
           </TouchableOpacity>
