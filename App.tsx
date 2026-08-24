@@ -15,6 +15,7 @@ import FacturaNuevaScreen from './src/screens/FacturaNuevaScreen';
 import FacturaEditarScreen from './src/screens/FacturaEditarScreen';
 import InventarioScreen from './src/screens/InventarioScreen';
 import InventarioEditarScreen from './src/screens/InventarioEditarScreen';
+import ReportesScreen from './src/screens/ReportesScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -34,6 +35,7 @@ export type RootStackParamList = {
     producto_id_producto: string | number;
     nombre_producto: string;
   };
+  ReportesScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -112,6 +114,11 @@ function App() {
             name="InventarioEditarScreen"
             component={InventarioEditarScreen}
             options={{ title: 'Editar Inventario' }}
+          />
+          <Stack.Screen
+            name="ReportesScreen"
+            component={ReportesScreen}
+            options={{ title: 'Reportes' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
