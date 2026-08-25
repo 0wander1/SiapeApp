@@ -20,6 +20,8 @@ import ProveedoresScreen from './src/screens/ProveedoresScreen';
 import ProveedorDetalleScreen from './src/screens/ProveedorDetalleScreen';
 import ProveedorNuevoScreen from './src/screens/ProveedorNuevoScreen';
 import ProveedorEditarScreen from './src/screens/ProveedorEditarScreen';
+import PagosScreen from './src/screens/PagosScreen';
+import PagoNuevoScreen from './src/screens/PagoNuevoScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -44,6 +46,8 @@ export type RootStackParamList = {
   ProveedorDetalleScreen: { id_proveedor: string | number };
   ProveedorNuevoScreen: undefined;
   ProveedorEditarScreen: { id_proveedor: string | number };
+  PagosScreen: undefined;
+  PagoNuevoScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -147,6 +151,16 @@ function App() {
             name="ProveedorEditarScreen"
             component={ProveedorEditarScreen}
             options={{ title: 'Editar Proveedor' }}
+          />
+          <Stack.Screen
+            name="PagosScreen"
+            component={PagosScreen}
+            options={{ title: 'Pagos' }}
+          />
+          <Stack.Screen
+            name="PagoNuevoScreen"
+            component={PagoNuevoScreen}
+            options={{ title: 'Nuevo Pago' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -41,6 +41,8 @@ function HomeScreen() {
       navigation.navigate('ReportesScreen');
     } else if (moduleKey === 'proveedores') {
       navigation.navigate('ProveedoresScreen');
+    } else if (moduleKey === 'pagos') {
+      navigation.navigate('PagosScreen');
     }
   };
 
