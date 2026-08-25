@@ -39,6 +39,8 @@ function HomeScreen() {
       navigation.navigate('InventarioScreen');
     } else if (moduleKey === 'reportes') {
       navigation.navigate('ReportesScreen');
+    } else if (moduleKey === 'proveedores') {
+      navigation.navigate('ProveedoresScreen');
     }
   };
 

@@ -16,6 +16,10 @@ import FacturaEditarScreen from './src/screens/FacturaEditarScreen';
 import InventarioScreen from './src/screens/InventarioScreen';
 import InventarioEditarScreen from './src/screens/InventarioEditarScreen';
 import ReportesScreen from './src/screens/ReportesScreen';
+import ProveedoresScreen from './src/screens/ProveedoresScreen';
+import ProveedorDetalleScreen from './src/screens/ProveedorDetalleScreen';
+import ProveedorNuevoScreen from './src/screens/ProveedorNuevoScreen';
+import ProveedorEditarScreen from './src/screens/ProveedorEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -36,6 +40,10 @@ export type RootStackParamList = {
     nombre_producto: string;
   };
   ReportesScreen: undefined;
+  ProveedoresScreen: undefined;
+  ProveedorDetalleScreen: { id_proveedor: string | number };
+  ProveedorNuevoScreen: undefined;
+  ProveedorEditarScreen: { id_proveedor: string | number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -119,6 +127,26 @@ function App() {
             name="ReportesScreen"
             component={ReportesScreen}
             options={{ title: 'Reportes' }}
+          />
+          <Stack.Screen
+            name="ProveedoresScreen"
+            component={ProveedoresScreen}
+            options={{ title: 'Proveedores' }}
+          />
+          <Stack.Screen
+            name="ProveedorDetalleScreen"
+            component={ProveedorDetalleScreen}
+            options={{ title: 'Detalle del Proveedor' }}
+          />
+          <Stack.Screen
+            name="ProveedorNuevoScreen"
+            component={ProveedorNuevoScreen}
+            options={{ title: 'Nuevo Proveedor' }}
+          />
+          <Stack.Screen
+            name="ProveedorEditarScreen"
+            component={ProveedorEditarScreen}
+            options={{ title: 'Editar Proveedor' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

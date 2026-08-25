@@ -22,3 +22,7 @@ export type Proveedor = {
 export type ProveedorDetalle = Proveedor & {
   productos_asociados?: Producto[];
 };
+
+export type ProveedorItem = Proveedor & {
+  pedidos_pendientes: number;
+};
