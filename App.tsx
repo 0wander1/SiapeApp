@@ -26,6 +26,9 @@ import ProductosScreen from './src/screens/ProductosScreen';
 import ProductoDetalleScreen from './src/screens/ProductoDetalleScreen';
 import ProductoNuevoScreen from './src/screens/ProductoNuevoScreen';
 import ProductoEditarScreen from './src/screens/ProductoEditarScreen';
+import BodegasScreen from './src/screens/BodegasScreen';
+import BodegaNuevaScreen from './src/screens/BodegaNuevaScreen';
+import BodegaEditarScreen from './src/screens/BodegaEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -56,6 +59,9 @@ export type RootStackParamList = {
   ProductoDetalleScreen: { id_producto: string | number };
   ProductoNuevoScreen: undefined;
   ProductoEditarScreen: { id_producto: string | number };
+  BodegasScreen: undefined;
+  BodegaNuevaScreen: undefined;
+  BodegaEditarScreen: { id_bodega: string | number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -189,6 +195,21 @@ function App() {
             name="ProductoEditarScreen"
             component={ProductoEditarScreen}
             options={{ title: 'Editar Producto' }}
+          />
+          <Stack.Screen
+            name="BodegasScreen"
+            component={BodegasScreen}
+            options={{ title: 'Bodegas' }}
+          />
+          <Stack.Screen
+            name="BodegaNuevaScreen"
+            component={BodegaNuevaScreen}
+            options={{ title: 'Nueva Bodega' }}
+          />
+          <Stack.Screen
+            name="BodegaEditarScreen"
+            component={BodegaEditarScreen}
+            options={{ title: 'Editar Bodega' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

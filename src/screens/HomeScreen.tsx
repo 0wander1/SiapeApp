@@ -45,6 +45,8 @@ function HomeScreen() {
       navigation.navigate('PagosScreen');
     } else if (moduleKey === 'productos') {
       navigation.navigate('ProductosScreen');
+    } else if (moduleKey === 'bodegas') {
+      navigation.navigate('BodegasScreen');
     }
   };
 
