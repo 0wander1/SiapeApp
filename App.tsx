@@ -29,6 +29,9 @@ import ProductoEditarScreen from './src/screens/ProductoEditarScreen';
 import BodegasScreen from './src/screens/BodegasScreen';
 import BodegaNuevaScreen from './src/screens/BodegaNuevaScreen';
 import BodegaEditarScreen from './src/screens/BodegaEditarScreen';
+import ClientesScreen from './src/screens/ClientesScreen';
+import ClienteNuevoScreen from './src/screens/ClienteNuevoScreen';
+import ClienteEditarScreen from './src/screens/ClienteEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -62,6 +65,13 @@ export type RootStackParamList = {
   BodegasScreen: undefined;
   BodegaNuevaScreen: undefined;
   BodegaEditarScreen: { id_bodega: string | number };
+  ClientesScreen: undefined;
+  ClienteNuevoScreen: undefined;
+  ClienteEditarScreen: {
+    id_usuario_cli: string | number;
+    nombre_usuario: string;
+    correo: string;
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -210,6 +220,21 @@ function App() {
             name="BodegaEditarScreen"
             component={BodegaEditarScreen}
             options={{ title: 'Editar Bodega' }}
+          />
+          <Stack.Screen
+            name="ClientesScreen"
+            component={ClientesScreen}
+            options={{ title: 'Clientes' }}
+          />
+          <Stack.Screen
+            name="ClienteNuevoScreen"
+            component={ClienteNuevoScreen}
+            options={{ title: 'Nuevo Cliente' }}
+          />
+          <Stack.Screen
+            name="ClienteEditarScreen"
+            component={ClienteEditarScreen}
+            options={{ title: 'Editar Cliente' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

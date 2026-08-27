@@ -47,6 +47,8 @@ function HomeScreen() {
       navigation.navigate('ProductosScreen');
     } else if (moduleKey === 'bodegas') {
       navigation.navigate('BodegasScreen');
+    } else if (moduleKey === 'clientes') {
+      navigation.navigate('ClientesScreen');
     }
   };
 

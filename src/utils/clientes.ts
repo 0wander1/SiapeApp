@@ -4,5 +4,6 @@ export const CLIENTES_URL =
 export type Cliente = {
   id_usuario_cli: string | number;
   nombre_usuario: string;
+  correo?: string;
   [key: string]: unknown;
 };
