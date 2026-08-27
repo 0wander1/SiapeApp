@@ -4,5 +4,10 @@ export const PRODUCTOS_URL =
 export type Producto = {
   id_producto: string | number;
   nombre_producto: string;
+  valor_neto?: number;
+  valor_de_venta: number;
+  lote?: string;
+  fecha_vencimiento?: string;
+  bodega_id_bodega?: string | number;
   [key: string]: unknown;
 };

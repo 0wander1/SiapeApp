@@ -22,6 +22,10 @@ import ProveedorNuevoScreen from './src/screens/ProveedorNuevoScreen';
 import ProveedorEditarScreen from './src/screens/ProveedorEditarScreen';
 import PagosScreen from './src/screens/PagosScreen';
 import PagoNuevoScreen from './src/screens/PagoNuevoScreen';
+import ProductosScreen from './src/screens/ProductosScreen';
+import ProductoDetalleScreen from './src/screens/ProductoDetalleScreen';
+import ProductoNuevoScreen from './src/screens/ProductoNuevoScreen';
+import ProductoEditarScreen from './src/screens/ProductoEditarScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -48,6 +52,10 @@ export type RootStackParamList = {
   ProveedorEditarScreen: { id_proveedor: string | number };
   PagosScreen: undefined;
   PagoNuevoScreen: undefined;
+  ProductosScreen: undefined;
+  ProductoDetalleScreen: { id_producto: string | number };
+  ProductoNuevoScreen: undefined;
+  ProductoEditarScreen: { id_producto: string | number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -161,6 +169,26 @@ function App() {
             name="PagoNuevoScreen"
             component={PagoNuevoScreen}
             options={{ title: 'Nuevo Pago' }}
+          />
+          <Stack.Screen
+            name="ProductosScreen"
+            component={ProductosScreen}
+            options={{ title: 'Productos' }}
+          />
+          <Stack.Screen
+            name="ProductoDetalleScreen"
+            component={ProductoDetalleScreen}
+            options={{ title: 'Detalle del Producto' }}
+          />
+          <Stack.Screen
+            name="ProductoNuevoScreen"
+            component={ProductoNuevoScreen}
+            options={{ title: 'Nuevo Producto' }}
+          />
+          <Stack.Screen
+            name="ProductoEditarScreen"
+            component={ProductoEditarScreen}
+            options={{ title: 'Editar Producto' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

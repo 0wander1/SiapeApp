@@ -43,6 +43,8 @@ function HomeScreen() {
       navigation.navigate('ProveedoresScreen');
     } else if (moduleKey === 'pagos') {
       navigation.navigate('PagosScreen');
+    } else if (moduleKey === 'productos') {
+      navigation.navigate('ProductosScreen');
     }
   };
 
