@@ -32,6 +32,10 @@ import BodegaEditarScreen from './src/screens/BodegaEditarScreen';
 import ClientesScreen from './src/screens/ClientesScreen';
 import ClienteNuevoScreen from './src/screens/ClienteNuevoScreen';
 import ClienteEditarScreen from './src/screens/ClienteEditarScreen';
+import PQRSScreen from './src/screens/PQRSScreen';
+import PerfilNegocioScreen from './src/screens/PerfilNegocioScreen';
+import CambiarPasswordScreen from './src/screens/CambiarPasswordScreen';
+import PerfilScreen from './src/screens/PerfilScreen';
 
 export type RootStackParamList = {
   LoginScreen: undefined;
@@ -72,6 +76,10 @@ export type RootStackParamList = {
     nombre_usuario: string;
     correo: string;
   };
+  PQRSScreen: undefined;
+  PerfilNegocioScreen: undefined;
+  CambiarPasswordScreen: undefined;
+  PerfilScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -235,6 +243,26 @@ function App() {
             name="ClienteEditarScreen"
             component={ClienteEditarScreen}
             options={{ title: 'Editar Cliente' }}
+          />
+          <Stack.Screen
+            name="PQRSScreen"
+            component={PQRSScreen}
+            options={{ title: 'PQRS' }}
+          />
+          <Stack.Screen
+            name="PerfilNegocioScreen"
+            component={PerfilNegocioScreen}
+            options={{ title: 'Perfil del Negocio' }}
+          />
+          <Stack.Screen
+            name="CambiarPasswordScreen"
+            component={CambiarPasswordScreen}
+            options={{ title: 'Cambiar Contraseña' }}
+          />
+          <Stack.Screen
+            name="PerfilScreen"
+            component={PerfilScreen}
+            options={{ title: 'Perfil' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

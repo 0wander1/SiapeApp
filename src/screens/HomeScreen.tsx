@@ -1,8 +1,18 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useLayoutEffect, useState } from 'react';
+import {
+  FlatList,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 import type { RootStackParamList } from '../../App';
+import { setToken } from '../state/auth';
 
 type Module = {
   key: string;
@@ -27,8 +37,54 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
   'HomeScreen'
 >;
 
+const MENU_OPTIONS = [
+  'Ver perfil',
+  'Cambiar contraseña',
+  'Perfil del negocio',
+  'PQRS',
+  'Cerrar sesión',
+] as const;
+
+function HeaderMenuButton({ onPress }: { onPress: () => void }) {
+  return (
+    <TouchableOpacity style={styles.headerButton} onPress={onPress}>
+      <Text style={styles.headerButtonText}>⋮</Text>
+    </TouchableOpacity>
+  );
+}
+
 function HomeScreen() {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const [menuModalVisible, setMenuModalVisible] = useState(false);
+
+  const handleLogout = () => {
+    setToken(null);
+    navigation.navigate('LoginScreen');
+  };
+
+  const handleMenuOption = (option: (typeof MENU_OPTIONS)[number]) => {
+    setMenuModalVisible(false);
+
+    if (option === 'Cerrar sesión') {
+      handleLogout();
+    } else if (option === 'Ver perfil') {
+      navigation.navigate('PerfilScreen');
+    } else if (option === 'PQRS') {
+      navigation.navigate('PQRSScreen');
+    } else if (option === 'Perfil del negocio') {
+      navigation.navigate('PerfilNegocioScreen');
+    } else if (option === 'Cambiar contraseña') {
+      navigation.navigate('CambiarPasswordScreen');
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderMenuButton onPress={() => setMenuModalVisible(true)} />
+      ),
+    });
+  }, [navigation]);
 
   const handlePress = (moduleKey: string) => {
     if (moduleKey === 'pedidos') {
@@ -71,6 +127,45 @@ function HomeScreen() {
           </TouchableOpacity>
         ))}
       </View>
+
+      <Modal
+        visible={menuModalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setMenuModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Opciones</Text>
+            <FlatList
+              data={MENU_OPTIONS}
+              keyExtractor={item => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.modalItem}
+                  onPress={() => handleMenuOption(item)}
+                >
+                  <Text
+                    style={
+                      item === 'Cerrar sesión'
+                        ? styles.modalItemTextDestructive
+                        : styles.modalItemText
+                    }
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity
+              style={styles.modalCloseButton}
+              onPress={() => setMenuModalVisible(false)}
+            >
+              <Text style={styles.modalCloseButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -81,6 +176,60 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  headerButton: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  headerButtonText: {
+    color: '#007AFF',
+    fontSize: 22,
+    fontWeight: '700',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  },
+  modalContent: {
+    maxHeight: '70%',
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+  modalItem: {
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  modalItemText: {
+    fontSize: 16,
+  },
+  modalItemTextDestructive: {
+    fontSize: 16,
+    color: '#D32F2F',
+  },
+  modalCloseButton: {
+    height: 44,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#007AFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  modalCloseButtonText: {
+    color: '#007AFF',
+    fontSize: 15,
+    fontWeight: '600',
   },
   content: {
     paddingHorizontal: 16,
